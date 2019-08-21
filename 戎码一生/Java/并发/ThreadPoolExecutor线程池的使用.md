@@ -2,7 +2,7 @@
 
 #### 一： 创建线程池对象
 
-```
+```java
 ThreadPoolExecutor pool = new ThreadPoolExecutor(2, 20, 0L
                 , TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(1024)
                 , Executors.defaultThreadFactory()
@@ -37,7 +37,7 @@ ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, Ti
 
 ​	SynchronousQueue是一个特殊的BlockingQueue，它==没有容量==，每执行一个插入操作就会阻塞，需要再执行一个删除操作才会被唤醒，反之每一个删除操作也都要等待对应的插入操作。
 
-~~~
+~~~java
 public static void useSynchronousQueue() {
         ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 2, 1000
                 , TimeUnit.MILLISECONDS, new SynchronousQueue<>()
@@ -95,7 +95,7 @@ pool-1-thread-2
 
 ​	线程池中线程就是通过ThreadPoolExecutor中的ThreadFactory，线程工厂创建的。那么通过自定义ThreadFactory，==可以按需要对线程池中创建的线程进行一些特殊的设置==，如命名、优先级等。
 
-```
+```java
 /**
      * Description:使用自定义的ThreadFactory,ThreadFactory是一个函数式接口，使用lambda表达式
      * @auther: renyang
@@ -139,7 +139,7 @@ ThreadPoolExecutor扩展主要是围绕beforeExecute()、afterExecute()和termin
 
 通过这三个接口我们可以监控每个任务的开始和结束时间，或者其他一些功能。
 
-~~~
+~~~java
  public static void expandThreadPoolExecutor() {
         ThreadPoolExecutor pool = new ThreadPoolExecutor(2, 5, 1000
                 , TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(5)
