@@ -9,7 +9,7 @@ ThreadPoolExecutor pool = new ThreadPoolExecutor(2, 20, 0L
                 , new ThreadPoolExecutor.AbortPolicy());	
 ```
 
-==构造函数==：
+构造函数：
 
 ```
 ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) 
@@ -19,7 +19,7 @@ ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, Ti
 
 **corePoolSize**:指定了线程池中的线程数量，它的数量决定了添加的任务是开辟新的线程去执行，还是放到         						workQueue任务队列中去；
 
-**maximumPoolSize**:指定了线程池中的最大线程数量，这个参数会==根据使用的workQueue任务队列的类型==，决定线程池会开辟的最大线程数量；
+**maximumPoolSize**:指定了线程池中的最大线程数量，这个参数会根据使用的workQueue任务队列的类型，决定线程池会开辟的最大线程数量；
 
 **keepAliveTime**:当线程池中空闲线程数量超过corePoolSize时，多余的线程会在多长时间内被销毁；
 
@@ -33,9 +33,9 @@ ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, Ti
 
 #### 二：workQueue任务队列
 
-##### 1.==SynchronousQueue==（直接提交队列）
+##### 1.SynchronousQueue（直接提交队列）
 
-​	SynchronousQueue是一个特殊的BlockingQueue，它==没有容量==，每执行一个插入操作就会阻塞，需要再执行一个删除操作才会被唤醒，反之每一个删除操作也都要等待对应的插入操作。
+​	SynchronousQueue是一个特殊的BlockingQueue，它没有容量，每执行一个插入操作就会阻塞，需要再执行一个删除操作才会被唤醒，反之每一个删除操作也都要等待对应的插入操作。
 
 ~~~java
 public static void useSynchronousQueue() {
@@ -65,19 +65,19 @@ pool-1-thread-2
 
 ​	可以看到，当任务队列为SynchronousQueue，创建的线程数大于maximumPoolSize时，直接执行了拒绝策略抛出异常。
 
-​	使用SynchronousQueue队列，提交的任务不会被保存，总是会马上提交执行。如果用于执行任务的线程数量小于maximumPoolSize，则尝试创建新的进程，如果达到maximumPoolSize设置的最大值，则根据你设置的handler执行拒绝策略。因此这种方式你提交的==任务不会被缓存起来，而是会被马上执行==，在这种情况下，你需要==对并发量有个准确的评估==，才能设置合适的maximumPoolSize数量，否则很容易就会执行拒绝策略；
+​	使用SynchronousQueue队列，提交的任务不会被保存，总是会马上提交执行。如果用于执行任务的线程数量小于maximumPoolSize，则尝试创建新的进程，如果达到maximumPoolSize设置的最大值，则根据你设置的handler执行拒绝策略。因此这种方式你提交的任务不会被缓存起来，而是会被马上执行，在这种情况下，你需要对并发量有个准确的评估，才能设置合适的maximumPoolSize数量，否则很容易就会执行拒绝策略；
 
-##### 2. ==ArrayBlockingQueue==（**有界的任务队列**）
+##### 2. ArrayBlockingQueue（**有界的任务队列**）
 
-​	使用ArrayBlockingQueue有界任务队列，若有新的任务需要执行时，线程池会创建新的线程，直到创建的线程数量达到corePoolSize时，则会将新的任务加入到等待队列中。若等待队列已满，即超过ArrayBlockingQueue初始化的容量，则继续创建线程，直到线程数量达到maximumPoolSize设置的最大线程数量，若大于maximumPoolSize，则执行拒绝策略。在这种情况下，线程数量的上限与有界任务队列的状态有直接关系，==如果有界队列初始容量较大或者没有达到超负荷的状态，线程数将一直维持在corePoolSize以下==，反之当任务队列已满时，则会以maximumPoolSize为最大线程数上限。
+​	使用ArrayBlockingQueue有界任务队列，若有新的任务需要执行时，线程池会创建新的线程，直到创建的线程数量达到corePoolSize时，则会将新的任务加入到等待队列中。若等待队列已满，即超过ArrayBlockingQueue初始化的容量，则继续创建线程，直到线程数量达到maximumPoolSize设置的最大线程数量，若大于maximumPoolSize，则执行拒绝策略。在这种情况下，线程数量的上限与有界任务队列的状态有直接关系，如果有界队列初始容量较大或者没有达到超负荷的状态，线程数将一直维持在corePoolSize以下，反之当任务队列已满时，则会以maximumPoolSize为最大线程数上限。
 
-##### 3. ==LinkedBlockingQueue==（无界的任务队列）
+##### 3. LinkedBlockingQueue（无界的任务队列）
 
-​	使用无界任务队列，线程池的任务队列可以无限制的添加新的任务，而==线程池创建的最大线程数量就是你corePoolSize设置的数量==，也就是说在这种情况下==maximumPoolSize这个参数是无效的==，哪怕你的任务队列中缓存了很多未执行的任务，当线程池的线程数达到corePoolSize后，就不会再增加了；若后续有新的任务加入，则直接进入队列等待，当使用这种任务队列模式时，一定要注意你任务提交与处理之间的协调与控制，不然会出现队列中的任务由于无法及时处理导致一直增长，直到最后资源耗尽的问题。
+​	使用无界任务队列，线程池的任务队列可以无限制的添加新的任务，而线程池创建的最大线程数量就是你corePoolSize设置的数量，也就是说在这种情况下maximumPoolSize这个参数是无效的，哪怕你的任务队列中缓存了很多未执行的任务，当线程池的线程数达到corePoolSize后，就不会再增加了；若后续有新的任务加入，则直接进入队列等待，当使用这种任务队列模式时，一定要注意你任务提交与处理之间的协调与控制，不然会出现队列中的任务由于无法及时处理导致一直增长，直到最后资源耗尽的问题。
 
-##### 4. ==PriorityBlockingQueue==（优先任务队列）
+##### 4. PriorityBlockingQueue（优先任务队列）
 
-​	PriorityBlockingQueue它其实是一个==特殊的无界队列==，它其中无论添加了多少个任务，==线程池创建的线程数也不会超过corePoolSize==的数量，只不过其他队列一般是按照==先进先出==的规则处理任务，而PriorityBlockingQueue队列可以自定义规则根据任务的==优先级顺序==先后执行。
+​	PriorityBlockingQueue它其实是一个特殊的无界队列，它其中无论添加了多少个任务，线程池创建的线程数也不会超过corePoolSize的数量，只不过其他队列一般是按照先进先出的规则处理任务，而PriorityBlockingQueue队列可以自定义规则根据任务的优先级顺序先后执行。
 
 #### 三：拒绝策略
 
@@ -89,11 +89,11 @@ pool-1-thread-2
 
 **4、DiscardPolicy策略**：该策略会默默丢弃无法处理的任务，不予任何处理。当然使用此策略，业务场景中需允许任务的丢失；
 
-​	以上内置的策略均实现了RejectedExecutionHandler接口，当然也==可以自己扩展RejectedExecutionHandler接口，定义自己的拒绝策略==。
+​	以上内置的策略均实现了RejectedExecutionHandler接口，当然也可以自己扩展RejectedExecutionHandler接口，定义自己的拒绝策略。
 
 #### 四：ThreadFactory自定义线程创建
 
-​	线程池中线程就是通过ThreadPoolExecutor中的ThreadFactory，线程工厂创建的。那么通过自定义ThreadFactory，==可以按需要对线程池中创建的线程进行一些特殊的设置==，如命名、优先级等。
+​	线程池中线程就是通过ThreadPoolExecutor中的ThreadFactory，线程工厂创建的。那么通过自定义ThreadFactory，可以按需要对线程池中创建的线程进行一些特殊的设置，如命名、优先级等。
 
 ```java
 /**

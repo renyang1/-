@@ -8,17 +8,17 @@ https://blog.csdn.net/qq_40024178/article/details/93371760
 
 #### 1. 使用```ipconfig /all```命令查看win10上的网关和IP
 
-![1570844484295](C:\Users\renyang\AppData\Roaming\Typora\typora-user-images\1570844484295.png)
+![1570844484295](https://raw.githubusercontent.com/renyang1/typora/master/1570844484295.png)
 
 #### 2. 在VM上设置桥接网络
 
-![1570867718427](C:\Users\renyang\AppData\Roaming\Typora\typora-user-images\1570867718427.png)
+![1570867718427](https://raw.githubusercontent.com/renyang1/typora/master/1570867718427.png)
 
 #### 3. 打开虚拟机，设置桥接静态IP
 
 执行linux命令```vi /etc/sysconfig/network-scripts/ifcfg-ens33	```编辑文件
 
-![1570956666592](C:\Users\renyang\AppData\Roaming\Typora\typora-user-images\1570956666592.png)
+![1570956666592](https://raw.githubusercontent.com/renyang1/typora/master/1570956666592.png)
 
 **重点参数说明**
 

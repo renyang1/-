@@ -6,7 +6,7 @@
 
 ### 2. 应用Optional的几种模式
 
-### 1. 创建Optional对象
+#### 1. 创建Optional对象
 
 - **Optional.empty()**：创建空对象
 - **Optional.of(T)**：创建非空Optional对象，T为空则抛出异常

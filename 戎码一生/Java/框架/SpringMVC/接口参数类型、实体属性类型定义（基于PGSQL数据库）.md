@@ -118,7 +118,4 @@ public class TestUserDo extends BaseEntity implements Serializable {
 ```java
 org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `com.newboss.api.base.enums.SexEnum` from String "MALE1": value not one of declared Enum instance names: [UNKNOWN, FEMALE, MALE]; 
 nested exception is com.fasterxml.jackson.databind.exc.InvalidFormatException: Cannot deserialize value of type `com.newboss.api.base.enums.SexEnum` from String "MALE1": value not one of declared Enum instance names: [UNKNOWN, FEMALE, MALE]
-
 ```
-
-### 
