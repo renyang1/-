@@ -49,7 +49,7 @@ public class Test01 {
 
         // 1.通过对象获取
         Class c1 = person.getClass();
-        System.out.println(c1.hashCode());
+        System.out.println(c1.hashCode());	
 
         // 2.forName获取
         Class c2 = Class.forName("com.ryang.reflection.Person");
@@ -91,12 +91,15 @@ public class Test04 {
         /** 通过反射操作属性 */
         Dog dog1 = (Dog) c1.newInstance();
         System.out.println(dog1);
-        // 获取属性
+        // 设置属性值
         Field org = c1.getDeclaredField("org");
         // 不能直接操作私有属性，需要调用属性或方法的setAccessible(true)关闭安全检测
         org.setAccessible(true);
         org.set(dog1, "南充");
         System.out.println(dog1.getOrg());
+        // 获取指定对象字段值
+        String orgName = (String) org.get(dog1);
+        System.out.println(orgName);
     }
 }
 ```
@@ -143,7 +146,30 @@ Object invoke(Object obj, Object... args)
 }
 ```
 
+### PropertyDescriptor（属性描述器）的使用
+
+​	PropertyDescriptor可以用在获取指定Class属性的get()、set()方法，以此来对属性进行操作。在MyBatis的结果集封装中便是使用了该方式，通过查询结果的列名（columnName）和配置的resultType完成封装。
+
+​	**通过PropertyDescriptor操作的属性需要有get、set方法**
+
+```java
+	    public static void main(String[] args) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+
+        Dog dog = new Dog("testOrg");
+        Object obj = dog;
+
+        PropertyDescriptor propertyDescriptor = new PropertyDescriptor("org", dog.getClass());
+        // 获取属性读方法
+        Method orgReadMethod = propertyDescriptor.getReadMethod();
+        Object object = orgReadMethod.invoke(obj);
+        System.out.println(object);
+
+        // 获取属性写方法
+        Method orgWriteMethod = propertyDescriptor.getWriteMethod();
+        orgWriteMethod.invoke(obj, "testOrg1");
+        System.out.println(obj.toString());
+    }
+```
 
 
-  
 

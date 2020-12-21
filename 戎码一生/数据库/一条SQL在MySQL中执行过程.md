@@ -7,7 +7,7 @@ MySQL只要分为Server层和存储引擎层：
 * Server层：主要包括连接器、查询缓存、分析器、优化器、执行器等，所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图，函数等，还有一个通用的日志模块 binglog 日志模块。
 * 存储引擎：主要负责数据的存储和读取，采用可以替换的插件式架构，支持 InnoDB、MyISAM、Memory 等多个存储引擎，其中 InnoDB 引擎有自有的日志模块 redolog 模块。
 
-![1566981652883](C:\Users\renyang\AppData\Roaming\Typora\typora-user-images\1566981652883.png)
+![1566981652883](https://raw.githubusercontent.com/renyang1/typora/master/20201127113721.png)
 
 #### Server层基本组件介绍
 

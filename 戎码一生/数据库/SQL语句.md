@@ -15,6 +15,8 @@
 
 #### 索引
 
+​	**索引命名规范**：主键索引名为pk_字段名；唯一索引名为uk_字段名；普通索引名则为idx_字段名。说明：pk_ 即primary key；uk_ 即 unique key；idx_ 即index的简称。
+
 ```sql
 -- 查看索引
 -- mysql
@@ -26,7 +28,7 @@ select * from pg_indexes WHERE tablename = 'course_mini_class_student';
 CREATE index idx_order_no on finance_order_item(order_no);
 
 -- 创建联合唯一索引
-CREATE unique index idx_student_mini_class on course_mini_class_student(student_no,mini_class_no);
+CREATE unique index uk_student_mini_class on course_mini_class_student(student_no,mini_class_no);
 
 ```
 
